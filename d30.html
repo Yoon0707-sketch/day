@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>30일 다이어트 챌린지</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Gaegu:wght@700&display=swap" rel="stylesheet">
+<style>
+/* ── 토마토 스티커 감성: 단색, 두꺼운 검정선, 그라데이션 없음 ── */
+:root{
+  --bg:#FFFBE8;
+  --white:#FFFFFF;
+  --bk:#111111;
+  --text:#111111;
+  --text2:#444444;
+  --text3:#888888;
+
+  /* 메인 컬러 - 채도 높은 단색 */
+  --red:#E8352A;
+  --red-l:#FFE5E3;
+  --green:#3DB84C;
+  --green-l:#E3F7E6;
+  --blue:#00A878;
+  --blue-l:#D6F5EE;
+  --yellow:#FFD600;
+  --yellow-l:#FFFBE8;
+  --orange:#00A878;
+  --orange-l:#D6F5EE;
+  --mint:#00C4A0;
+  --mint-l:#E0FAF5;
+  --purple:#7B2FFF;
+  --purple-l:#EEE5FF;
+  --pink:#FF3D8A;
+  --pink-l:#FFE5F2;
+
+  --r:16px;
+  --rsm:10px;
+  --bw:2.5px; /* border width */
+  --sh:3px 3px 0 var(--bk); /* 두꺼운 검정 그림자 */
+  --sh-sm:2px 2px 0 var(--bk);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{
+  font-family:'Nanum Gothic','나눔고딕','Apple SD Gothic Neo',sans-serif;
+  background:var(--bg);color:var(--text);
+  max-width:430px;margin:0 auto;min-height:100vh;padding-bottom:88px;
+}
+
+/* ── HEADER ── */
+.hdr{
+  background:var(--red);
+  padding:22px 16px 14px;
+  border-bottom:var(--bw) solid var(--bk);
+  position:relative;
+}
+.hdr-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.hdr-title{font-family:'Gaegu',cursive;font-size:22px;font-weight:700;color:#fff;line-height:1.25;letter-spacing:-.3px;}
+.hdr-sub{font-size:11px;color:rgba(255,255,255,.75);margin-top:2px;font-weight:700;}
+.day-pill{
+  background:var(--yellow);color:var(--bk);
+  padding:5px 13px;border-radius:30px;font-size:13px;font-weight:800;
+  border:var(--bw) solid var(--bk);box-shadow:var(--sh-sm);
+  white-space:nowrap;flex-shrink:0;
+}
+
+/* ── DOTS ── */
+.dots-label{font-size:10px;font-weight:800;color:rgba(255,255,255,.8);letter-spacing:.3px;margin-bottom:7px;}
+.dots{display:flex;gap:4px;flex-wrap:wrap;}
+.dot{
+  width:26px;height:26px;border-radius:8px;
+  background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:rgba(255,255,255,.85);font-weight:800;
+  cursor:pointer;transition:transform .12s;
+}
+.dot:active{transform:scale(.88);}
+.dot.done{background:#fff;border-color:var(--bk);color:var(--red);box-shadow:var(--sh-sm);}
+.dot.today{background:var(--yellow);border:2px solid var(--bk);color:var(--bk);box-shadow:var(--sh-sm);}
+.dot.future{opacity:.3;cursor:default;}
+.dot.future:active{transform:none;}
+
+/* ── WEATHER ── */
+.wbar{
+  background:var(--orange);padding:11px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border-bottom:var(--bw) solid var(--bk);min-height:52px;
+}
+.wleft{display:flex;align-items:center;gap:9px;}
+.wicon{font-size:24px;}
+.wtemp{font-size:18px;font-weight:800;color:#fff;}
+.wdesc{font-size:10px;color:rgba(255,255,255,.7);margin-top:1px;font-weight:700;}
+.wbadge{
+  padding:5px 11px;border-radius:20px;font-size:11px;font-weight:800;
+  border:var(--bw) solid var(--bk);box-shadow:var(--sh-sm);white-space:nowrap;
+}
+.wbadge.good{background:var(--green);color:#fff;}
+.wbadge.bad{background:var(--orange);color:#fff;}
+.wbadge.meh{background:var(--yellow);color:var(--bk);}
+
+/* ── TABS ── */
+.tabs{
+  background:#fff;display:flex;padding:6px 7px;gap:4px;
+  border-bottom:var(--bw) solid var(--bk);
+  position:sticky;top:0;z-index:100;
+}
+.tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:7px 2px;border:none;background:transparent;
+  border-radius:10px;font-family:inherit;font-size:9.5px;
+  color:var(--text3);cursor:pointer;transition:all .12s;font-weight:800;
+}
+.tab .em{font-size:18px;line-height:1;}
+.tab.active{background:var(--yellow);color:var(--bk);border:var(--bw) solid var(--bk);}
+
+/* ── SECTIONS ── */
+.sec{display:none;padding:14px 13px;}
+.sec.active{display:block;}
+
+/* ── SECTION TITLE (스티커) ── */
+.s-title{
+  display:inline-block;
+  font-family:'Gaegu',cursive;font-size:19px;font-weight:700;
+  background:var(--green);color:#fff;
+  border:var(--bw) solid var(--bk);border-radius:12px;
+  padding:4px 14px 5px;box-shadow:var(--sh);
+  margin-bottom:14px;
+}
+
+/* ── CARD ── */
+.card{
+  background:#fff;border-radius:var(--r);padding:14px 15px;
+  margin-bottom:11px;
+  border:var(--bw) solid var(--bk);
+  box-shadow:var(--sh);
+}
+.clabel{font-size:10px;font-weight:800;color:var(--text2);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;}
+
+/* ── BANNER ── */
+.banner{
+  border-radius:var(--r);padding:14px 15px;margin-bottom:11px;
+  border:var(--bw) solid var(--bk);box-shadow:var(--sh);
+  background:var(--yellow);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.bsub{font-size:10px;font-weight:800;color:var(--bk);margin-bottom:3px;opacity:.6;}
+.bmsg{font-family:'Gaegu',cursive;font-size:17px;font-weight:700;color:var(--bk);line-height:1.3;}
+.bemoji{font-size:30px;}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.stat{background:#fff;border-radius:var(--rsm);padding:12px 8px;border:var(--bw) solid var(--bk);text-align:center;box-shadow:var(--sh-sm);}
+.sval{font-size:18px;font-weight:800;line-height:1.1;}
+.slbl{font-size:9px;color:var(--text2);margin-top:2px;font-weight:800;}
+
+/* ── BTN ── */
+.btnrow{display:flex;gap:7px;}
+.btn{
+  flex:1;padding:10px 8px;
+  border:var(--bw) solid var(--bk);border-radius:var(--rsm);
+  font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;
+  box-shadow:var(--sh-sm);transition:all .1s;
+}
+.btn:active{transform:translate(2px,2px);box-shadow:none;}
+.b-red{background:var(--red);color:#fff;}
+.b-blue{background:var(--blue);color:#fff;}
+.b-green{background:var(--green);color:#fff;}
+.b-yellow{background:var(--yellow);color:var(--bk);}
+.b-orange{background:var(--orange);color:#fff;}
+.b-mint{background:var(--mint);color:#fff;}
+.b-purple{background:var(--purple);color:#fff;}
+.b-pink{background:var(--pink);color:#fff;}
+.b-white{background:#fff;color:var(--bk);}
+.b-bk{background:var(--bk);color:#fff;}
+
+/* ── INPUT ── */
+.inp{
+  width:100%;padding:10px 12px;
+  border:var(--bw) solid var(--bk);border-radius:var(--rsm);
+  font-family:inherit;font-size:14px;color:var(--text);
+  background:#fff;outline:none;
+}
+.inp:focus{background:var(--yellow-l);}
+.inp::placeholder{color:var(--text3);}
+.sel{
+  width:100%;padding:10px 12px;
+  border:var(--bw) solid var(--bk);border-radius:var(--rsm);
+  font-family:inherit;font-size:14px;color:var(--text);
+  background:#fff;outline:none;cursor:pointer;margin-bottom:9px;
+}
+.irow{display:flex;gap:7px;margin-bottom:9px;}
+.irow .inp{flex:1;margin-bottom:0;}
+
+/* ── DROPS ── */
+.drops{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:8px 0;}
+.drop{font-size:20px;cursor:pointer;transition:transform .12s;filter:grayscale(1);opacity:.2;}
+.drop.on{filter:none;opacity:1;}
+.drop:active{transform:scale(.82);}
+
+/* ── FOOD ── */
+.fchip{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 11px;border-radius:var(--rsm);margin-bottom:5px;
+  border:var(--bw) solid var(--bk);background:#fff;box-shadow:var(--sh-sm);
+}
+.fname{font-size:13px;font-weight:800;}
+.ftime{font-size:10px;font-weight:800;color:var(--bk);margin-left:6px;background:var(--yellow);padding:1px 7px;border-radius:8px;border:1.5px solid var(--bk);}
+.fdel{background:none;border:none;font-size:14px;cursor:pointer;color:var(--text3);padding:2px;}
+.mealhd{
+  display:inline-block;font-size:11px;font-weight:800;
+  background:var(--green);color:#fff;
+  border:1.5px solid var(--bk);border-radius:8px;
+  padding:2px 9px;margin-bottom:6px;margin-top:4px;
+  box-shadow:1px 1px 0 var(--bk);
+}
+
+/* ── EX CARD ── */
+.excard{
+  border-radius:var(--r);padding:13px 14px;margin-bottom:10px;
+  border:var(--bw) solid var(--bk);background:#fff;box-shadow:var(--sh);
+}
+.exhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.exname{font-size:14px;font-weight:800;}
+.exmeta{font-size:11px;color:var(--text2);margin-bottom:9px;font-weight:700;}
+.chkbtn{
+  width:34px;height:34px;border-radius:50%;
+  border:var(--bw) solid var(--bk);background:#fff;
+  font-size:16px;color:var(--text3);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--sh-sm);transition:all .1s;
+}
+.chkbtn.on{background:var(--green);color:#fff;}
+.chkbtn:active{transform:translate(2px,2px);box-shadow:none;}
+.ytbtn{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--bk);color:#fff;padding:7px 14px;
+  border-radius:20px;font-size:12px;font-weight:800;
+  text-decoration:none;border:var(--bw) solid var(--bk);box-shadow:var(--sh-sm);
+  transition:all .1s;
+}
+.ytbtn:active{transform:translate(2px,2px);box-shadow:none;}
+.ytdot{width:7px;height:7px;border-radius:50%;background:#FF3B30;flex-shrink:0;}
+
+/* ── MUSIC PLAYER ── */
+.mwrap{
+  border-radius:var(--r);padding:15px;margin-bottom:11px;
+  background:var(--bk);border:var(--bw) solid var(--bk);box-shadow:var(--sh);
+}
+.mhead{font-size:14px;font-weight:800;color:#fff;margin-bottom:2px;font-family:'Gaegu',cursive;}
+.msub{font-size:10px;color:rgba(255,255,255,.45);margin-bottom:12px;font-weight:700;}
+.now-playing{
+  background:rgba(255,255,255,.1);border-radius:10px;
+  padding:11px;margin-bottom:10px;
+  border:1.5px solid rgba(255,255,255,.2);
+  display:flex;align-items:center;gap:10px;
+}
+.np-art{
+  width:40px;height:40px;border-radius:8px;
+  background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;border:2px solid rgba(255,255,255,.3);
+}
+.np-info{flex:1;min-width:0;}
+.np-song{font-size:13px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.np-artist{font-size:10px;color:rgba(255,255,255,.5);margin-top:1px;font-weight:700;}
+.np-bars{display:flex;gap:3px;align-items:flex-end;height:18px;}
+.npb{width:3px;border-radius:2px;background:var(--yellow);animation:s .7s ease-in-out infinite alternate;}
+.npb:nth-child(2){height:10px;animation-delay:.12s;}
+.npb:nth-child(3){height:16px;animation-delay:.25s;}
+.npb:nth-child(4){height:8px;animation-delay:.38s;}
+.npb:nth-child(5){height:13px;animation-delay:.05s;}
+@keyframes s{from{opacity:.5;transform:scaleY(.55);}to{opacity:1;transform:scaleY(1);}}
+.prog-bar-music{height:3px;background:rgba(255,255,255,.15);border-radius:2px;margin:5px 0;}
+.prog-bar-music-fill{height:100%;border-radius:2px;background:var(--yellow);width:35%;animation:pf 8s linear infinite;}
+@keyframes pf{from{width:4%;}to{width:96%;}}
+.mlist{display:flex;flex-direction:column;gap:6px;}
+.mitem{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 11px;background:rgba(255,255,255,.07);
+  border-radius:9px;border:1.5px solid rgba(255,255,255,.1);
+  cursor:pointer;transition:background .1s;
+}
+.mitem:active{background:rgba(255,255,255,.15);}
+.mnum{font-size:10px;color:rgba(255,255,255,.25);width:14px;font-weight:800;}
+.minfo{flex:1;min-width:0;}
+.msong{font-size:12px;font-weight:800;color:#fff;}
+.martist{font-size:10px;color:rgba(255,255,255,.4);margin-top:1px;font-weight:700;}
+.vibe{display:inline-block;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:800;border:1.5px solid;}
+.vcalm{background:var(--mint);color:var(--bk);border-color:var(--bk);}
+.vchill{background:var(--mint);color:var(--bk);border-color:var(--bk);}
+.vpop{background:var(--yellow);color:var(--bk);border-color:var(--bk);}
+
+/* ── STEPS ── */
+.stepsbig{text-align:center;padding:6px 0 12px;}
+.stepsnum{font-size:44px;font-weight:800;color:var(--mint);line-height:1;}
+.stepsunit{font-size:12px;color:var(--text2);font-weight:700;}
+.progbar{
+  border-radius:20px;height:14px;overflow:hidden;
+  border:var(--bw) solid var(--bk);background:var(--yellow-l);
+  margin:8px 0;box-shadow:var(--sh-sm);
+}
+.progfill{height:100%;transition:width .4s ease;}
+
+/* ── SLEEP ── */
+.sleepbig{text-align:center;padding:6px 0 12px;}
+.sleepnum{font-size:42px;font-weight:800;color:var(--purple);line-height:1;}
+.sleepunit{font-size:12px;color:var(--text2);font-weight:700;}
+.sqrow{display:flex;gap:6px;margin:9px 0;}
+.sqbtn{
+  flex:1;padding:7px 3px;
+  border:var(--bw) solid var(--bk);border-radius:9px;
+  background:#fff;font-family:inherit;font-size:10px;font-weight:800;
+  color:var(--text);cursor:pointer;box-shadow:var(--sh-sm);transition:all .1s;text-align:center;
+}
+.sqbtn:active{transform:translate(2px,2px);box-shadow:none;}
+.sqbtn.sel{background:var(--purple);color:#fff;}
+
+/* ── QUICK EX ── */
+.qrow{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:2px dashed #DDD;
+}
+.qrow:last-child{border-bottom:none;}
+.qname{font-size:13px;font-weight:800;}
+.qbtn{
+  padding:5px 12px;border-radius:20px;font-family:inherit;
+  font-size:11px;font-weight:800;cursor:pointer;
+  border:var(--bw) solid var(--bk);box-shadow:var(--sh-sm);transition:all .1s;
+}
+.qbtn:active{transform:translate(2px,2px);box-shadow:none;}
+.qbtn.done{background:var(--green);color:#fff;}
+.qbtn.todo{background:#fff;color:var(--text);}
+
+/* ── HISTORY ── */
+.hcard{background:#fff;border-radius:var(--r);padding:13px 14px;margin-bottom:9px;border:var(--bw) solid var(--bk);box-shadow:var(--sh-sm);}
+.hlabel{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--text2);margin-bottom:6px;}
+.hval{font-size:13px;color:var(--text);line-height:1.75;font-weight:700;}
+.chip{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;margin:2px;font-weight:800;border:var(--bw) solid var(--bk);box-shadow:1px 1px 0 var(--bk);}
+.chip.done{background:var(--green);color:#fff;}
+.chip.skip{background:#eee;color:#aaa;}
+
+/* ── CHART ── */
+.chart-wrap{background:#fff;border-radius:var(--r);padding:14px;margin-bottom:11px;border:var(--bw) solid var(--bk);box-shadow:var(--sh);}
+.chart-title{font-size:13px;font-weight:800;color:var(--text);margin-bottom:11px;}
+.bar-chart{display:flex;align-items:flex-end;gap:5px;height:90px;padding-bottom:18px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.bar-col{width:100%;border-radius:5px 5px 0 0;transition:height .3s;min-height:2px;border:1.5px solid var(--bk);}
+.bar-lbl{font-size:9px;color:var(--text3);font-weight:800;text-align:center;}
+.bar-val{font-size:8px;font-weight:800;text-align:center;}
+.leg{display:flex;gap:10px;flex-wrap:wrap;margin-top:7px;}
+.leg-i{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2);font-weight:800;}
+.leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0;border:1.5px solid var(--bk);}
+
+/* ── HEATMAP ── */
+.hmap{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:7px;}
+.hcell{
+  aspect-ratio:1;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:800;
+  border:var(--bw) solid var(--bk);cursor:pointer;
+  box-shadow:var(--sh-sm);transition:transform .1s;
+}
+.hcell:active{transform:translate(2px,2px);box-shadow:none;}
+.hcell.c0{background:#fff;color:var(--text3);}
+.hcell.c1{background:var(--mint-l);color:var(--bk);}
+.hcell.c2{background:var(--mint);color:var(--bk);}
+.hcell.c3{background:var(--green);color:#fff;}
+.hcell.c4{background:var(--red);color:#fff;}
+
+/* ── INNER TABS ── */
+.tabs-inner{display:flex;gap:6px;margin-bottom:12px;}
+.itab{
+  flex:1;padding:8px;border:var(--bw) solid var(--bk);border-radius:var(--rsm);
+  background:#fff;font-family:inherit;font-size:11px;font-weight:800;
+  color:var(--text);cursor:pointer;box-shadow:var(--sh-sm);transition:all .1s;text-align:center;
+}
+.itab:active{transform:translate(2px,2px);box-shadow:none;}
+.itab.active{background:var(--yellow);color:var(--bk);}
+
+/* ── DAY MODAL ── */
+.day-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .22s;}
+.day-modal.open{opacity:1;pointer-events:auto;}
+.day-sheet{
+  width:100%;max-width:430px;margin:0 auto;
+  background:var(--bg);
+  border-radius:20px 20px 0 0;
+  border-top:var(--bw) solid var(--bk);
+  padding:18px 15px 30px;
+  max-height:80vh;overflow-y:auto;
+  transform:translateY(30px);transition:transform .22s;
+}
+.day-modal.open .day-sheet{transform:translateY(0);}
+.ds-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ds-title{font-family:'Gaegu',cursive;font-size:20px;font-weight:700;color:var(--text);}
+.ds-close{width:32px;height:32px;border-radius:50%;background:var(--yellow);border:var(--bw) solid var(--bk);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh-sm);}
+.dscard{background:#fff;border-radius:var(--rsm);padding:11px 13px;margin-bottom:8px;border:var(--bw) solid var(--bk);box-shadow:var(--sh-sm);}
+.dslabel{font-size:10px;font-weight:800;color:var(--text2);letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px;}
+.dsval{font-size:13px;color:var(--text);line-height:1.7;font-weight:700;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--bk);color:#fff;padding:9px 18px;border-radius:20px;font-size:13px;font-weight:800;opacity:0;transition:all .2s;z-index:500;white-space:nowrap;border:2px solid rgba(255,255,255,.15);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── BOTTOM NAV ── */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:var(--bw) solid var(--bk);display:flex;padding:5px 6px 8px;gap:3px;z-index:200;}
+.btab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border:none;background:transparent;border-radius:9px;font-family:inherit;font-size:9px;color:var(--text3);cursor:pointer;transition:all .12s;font-weight:800;}
+.btab .em{font-size:20px;line-height:1;}
+.btab.active{background:var(--yellow);color:var(--bk);border:var(--bw) solid var(--bk);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div>
+      <div class="hdr-title">30일 다이어트 챌린지 🍅</div>
+      <div class="hdr-sub" id="hd-date"></div>
+    </div>
+    <div class="day-pill" id="hd-day">Day 1</div>
+  </div>
+  <div class="dots-label">▸ 날짜 누르면 그날 기록 볼 수 있어요!</div>
+  <div class="dots" id="day-dots"></div>
+</div>
+
+<!-- WEATHER -->
+<div class="wbar" id="wbar"><span style="font-size:12px;color:rgba(255,255,255,.6);font-weight:800;">날씨 불러오는 중…</span></div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="goTab('today',this)"><span class="em">🌟</span>오늘</button>
+  <button class="tab" onclick="goTab('food',this)"><span class="em">🍱</span>식단</button>
+  <button class="tab" onclick="goTab('exercise',this)"><span class="em">💪</span>운동</button>
+  <button class="tab" onclick="goTab('walk',this)"><span class="em">👟</span>걷기</button>
+  <button class="tab" onclick="goTab('history',this)"><span class="em">📊</span>기록</button>
+</div>
+
+<!-- ===== 오늘 ===== -->
+<div class="sec active" id="tab-today">
+  <div class="banner">
+    <div>
+      <div class="bsub" id="bn-sub">DAY 1 · 챌린지 진행 중</div>
+      <div class="bmsg" id="bn-msg">오늘도 나를 위한 하루!</div>
+    </div>
+    <div class="bemoji" id="bn-emoji">✨</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="sval" style="color:var(--blue)" id="sum-water">0ml</div><div class="slbl">💧 수분</div></div>
+    <div class="stat"><div class="sval" style="color:var(--red)" id="sum-steps">0</div><div class="slbl">👟 걸음</div></div>
+    <div class="stat"><div class="sval" style="color:var(--orange)" id="sum-foods">0개</div><div class="slbl">🍽️ 식사</div></div>
+    <div class="stat"><div class="sval" style="color:var(--green)" id="sum-ex">0/4</div><div class="slbl">💪 운동</div></div>
+  </div>
+
+  <div class="card">
+    <div class="clabel">💧 빠른 수분 기록</div>
+    <div class="drops" id="quick-drops"></div>
+    <div class="btnrow" style="margin-bottom:9px;">
+      <button class="btn b-orange" onclick="addWater()">+100ml</button>
+      <button class="btn b-white" onclick="removeWater()">−100ml</button>
+    </div>
+    <div style="text-align:center;font-size:22px;font-weight:800;color:var(--blue)" id="qw-num">0ml</div>
+  </div>
+
+  <div class="card">
+    <div class="clabel">오늘의 운동 체크</div>
+    <div id="quick-ex"></div>
+  </div>
+
+  <div class="card">
+    <div class="clabel">🌙 오늘 수면</div>
+    <div id="sleep-today" style="font-size:13px;color:var(--text2);font-weight:700;">수면 기록 없음 — 걷기 탭에서 입력하세요</div>
+  </div>
+</div>
+
+<!-- ===== 식단 ===== -->
+<div class="sec" id="tab-food">
+  <div class="s-title">🍱 오늘의 식단</div>
+  <div class="card">
+    <select class="sel" id="meal-sel">
+      <option value="breakfast">🌅 아침</option>
+      <option value="lunch">☀️ 점심</option>
+      <option value="dinner">🌙 저녁</option>
+      <option value="snack">🍪 간식</option>
+    </select>
+    <div class="irow">
+      <input class="inp" id="food-in" type="text" placeholder="음식 이름 입력" maxlength="30" style="flex:2;">
+      <input class="inp" id="food-time" type="time" style="flex:1;">
+    </div>
+    <button class="btn b-red" style="width:100%;" onclick="addFood()">✚ 기록 추가</button>
+  </div>
+  <div id="food-breakfast"></div>
+  <div id="food-lunch"></div>
+  <div id="food-dinner"></div>
+  <div id="food-snack"></div>
+</div>
+
+<!-- ===== 운동 ===== -->
+<div class="sec" id="tab-exercise">
+  <div class="s-title">💪 오늘의 운동</div>
+
+  <div class="excard">
+    <div class="exhead"><div class="exname">💪 팔 운동</div><button class="chkbtn" id="ex-arm" onclick="toggleEx('arm')">✓</button></div>
+    <div class="exmeta">이두·삼두 집중 운동 · YouTube 영상 참고</div>
+    <a href="https://www.youtube.com/watch?v=T-bVqdhqW2U&t=36s" target="_blank" class="ytbtn"><span class="ytdot"></span> YouTube 바로가기</a>
+  </div>
+
+  <div class="excard">
+    <div class="exhead"><div class="exname">🔥 복부 운동</div><button class="chkbtn" id="ex-core" onclick="toggleEx('core')">✓</button></div>
+    <div class="exmeta">복근·코어 집중 운동 · YouTube 영상 참고</div>
+    <a href="https://www.youtube.com/watch?v=hR1ZgDQqyVI" target="_blank" class="ytbtn"><span class="ytdot"></span> YouTube 바로가기</a>
+  </div>
+
+  <div class="excard">
+    <div class="exhead"><div class="exname">🧘 폼롤러 하체 스트레칭</div><button class="chkbtn" id="ex-foam" onclick="toggleEx('foam')">✓</button></div>
+    <div class="exmeta">⏱ 10분 · 하체 근막 이완</div>
+  </div>
+
+  <div class="excard">
+    <div class="exhead"><div class="exname">🤸 상체 스트레칭</div><button class="chkbtn" id="ex-stretch" onclick="toggleEx('stretch')">✓</button></div>
+    <div class="exmeta">⏱ 5분 · 어깨·목·등 이완</div>
+  </div>
+
+  <!-- 뮤직 플레이어 -->
+  <div class="mwrap">
+    <div class="mhead">🎵 오늘의 스트레칭 플레이리스트</div>
+    <div class="msub" id="music-sub">매일 새로운 큐레이션 ♪</div>
+    <div class="now-playing">
+      <div class="np-art" id="np-art">🎵</div>
+      <div class="np-info">
+        <div class="np-song" id="np-song">Experience</div>
+        <div class="np-artist" id="np-artist">Ludovico Einaudi</div>
+        <div class="prog-bar-music"><div class="prog-bar-music-fill"></div></div>
+      </div>
+      <div class="np-bars">
+        <div class="npb" style="height:6px"></div>
+        <div class="npb"></div><div class="npb"></div><div class="npb"></div>
+        <div class="npb" style="height:10px"></div>
+      </div>
+    </div>
+    <div class="mlist" id="music-list"></div>
+  </div>
+</div>
+
+<!-- ===== 걷기 ===== -->
+<div class="sec" id="tab-walk">
+  <div class="s-title">👟 걷기 기록</div>
+  <div class="card">
+    <div class="stepsbig">
+      <div class="stepsnum" id="steps-num">0</div>
+      <div class="stepsunit">걸음</div>
+    </div>
+    <div class="progbar">
+      <div class="progfill" id="steps-bar" style="width:0%;background:var(--blue)"></div>
+    </div>
+    <div style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:11px;font-weight:800;">목표 <b>10,000</b>걸음 · <span id="steps-pct">0%</span> 달성</div>
+    <div style="display:flex;gap:7px;">
+      <input class="inp" type="number" id="steps-in" placeholder="걸음 수 입력" style="flex:1;" inputmode="numeric">
+      <button class="btn b-orange" style="flex:0;padding:10px 13px;" onclick="saveSteps()">저장</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="clabel">🚶 산책 상세</div>
+    <div class="irow">
+      <input class="inp" type="text" id="walk-time" placeholder="시간 (예: 30분)">
+      <input class="inp" type="text" id="walk-dist" placeholder="거리 (예: 2.5km)">
+    </div>
+    <button class="btn b-mint" style="width:100%;" onclick="saveWalk()">산책 기록 저장</button>
+    <div id="walk-saved" style="margin-top:9px;font-size:13px;color:var(--text2);font-weight:700;"></div>
+  </div>
+  <div class="card">
+    <div class="clabel">🌙 수면 기록</div>
+    <div class="sleepbig">
+      <div class="sleepnum" id="sleep-num">0</div>
+      <div class="sleepunit">시간</div>
+    </div>
+    <div class="irow" style="margin-bottom:10px;">
+      <div style="flex:1;"><div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:4px;">취침</div><input class="inp" type="time" id="sleep-start" value="23:00"></div>
+      <div style="flex:1;"><div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:4px;">기상</div><input class="inp" type="time" id="sleep-end" value="07:00"></div>
+    </div>
+    <div class="clabel" style="margin-bottom:6px;">수면 품질</div>
+    <div class="sqrow">
+      <button class="sqbtn" data-q="나쁨" onclick="setSQ(this)">😴 나쁨</button>
+      <button class="sqbtn" data-q="보통" onclick="setSQ(this)">😐 보통</button>
+      <button class="sqbtn" data-q="좋음" onclick="setSQ(this)">😊 좋음</button>
+      <button class="sqbtn" data-q="최고" onclick="setSQ(this)">🌟 최고</button>
+    </div>
+    <button class="btn b-bk" style="width:100%;margin-top:9px;" onclick="saveSleep()">수면 기록 저장</button>
+    <div id="sleep-saved" style="margin-top:9px;font-size:13px;color:var(--text2);font-weight:700;"></div>
+  </div>
+</div>
+
+<!-- ===== 기록 ===== -->
+<div class="sec" id="tab-history">
+  <div class="s-title">📊 기록 & 통계</div>
+  <div class="tabs-inner">
+    <button class="itab active" id="htab-detail" onclick="switchHTab('detail')">📋 날별 기록</button>
+    <button class="itab" id="htab-chart" onclick="switchHTab('chart')">📈 통계 차트</button>
+  </div>
+  <div id="hist-detail">
+    <select class="sel" id="hist-sel" onchange="renderHistory()"></select>
+    <div class="hcard"><div class="hlabel">💧 수분 섭취</div><div class="hval" id="hv-water">-</div></div>
+    <div class="hcard"><div class="hlabel">🍽️ 식단</div><div class="hval" id="hv-food">-</div></div>
+    <div class="hcard"><div class="hlabel">💪 운동</div><div class="hval" id="hv-ex">-</div></div>
+    <div class="hcard"><div class="hlabel">👟 걸음 & 산책</div><div class="hval" id="hv-walk">-</div></div>
+    <div class="hcard"><div class="hlabel">🌙 수면</div><div class="hval" id="hv-sleep">-</div></div>
+  </div>
+  <div id="hist-chart" style="display:none;">
+    <div class="chart-wrap"><div class="chart-title">💧 최근 7일 수분 섭취</div><div class="bar-chart" id="chart-water"></div><div class="leg"><div class="leg-i"><div class="leg-dot" style="background:var(--blue)"></div>수분</div><div class="leg-i" style="color:var(--text3)">목표 2000ml</div></div></div>
+    <div class="chart-wrap"><div class="chart-title">👟 최근 7일 걸음 수</div><div class="bar-chart" id="chart-steps"></div><div class="leg"><div class="leg-i"><div class="leg-dot" style="background:var(--red)"></div>걸음</div><div class="leg-i" style="color:var(--text3)">목표 10,000보</div></div></div>
+    <div class="chart-wrap"><div class="chart-title">🌙 최근 7일 수면</div><div class="bar-chart" id="chart-sleep"></div><div class="leg"><div class="leg-i"><div class="leg-dot" style="background:var(--purple)"></div>수면</div><div class="leg-i" style="color:var(--text3)">권장 7~8시간</div></div></div>
+    <div class="chart-wrap">
+      <div class="chart-title">💪 30일 운동 달성 히트맵</div>
+      <div style="display:flex;gap:7px;margin-bottom:8px;flex-wrap:wrap;">
+        <div class="leg-i"><div class="leg-dot" style="background:#fff"></div>미기록</div>
+        <div class="leg-i"><div class="leg-dot" style="background:var(--mint-l)"></div>1개</div>
+        <div class="leg-i"><div class="leg-dot" style="background:var(--mint)"></div>2~3개</div>
+        <div class="leg-i"><div class="leg-dot" style="background:var(--red)"></div>4개 완료</div>
+      </div>
+      <div class="hmap" id="ex-heatmap"></div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-title">🏆 30일 챌린지 요약</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;" id="summary-stats"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY MODAL (편집 가능) -->
+<div class="day-modal" id="day-modal" onclick="closeDayModal(event)">
+  <div class="day-sheet">
+    <div class="ds-hd">
+      <div class="ds-title" id="modal-title">Day 1</div>
+      <button class="ds-close" onclick="closeDayModal()">✕</button>
+    </div>
+
+    <!-- 수분 -->
+    <div class="dscard">
+      <div class="dslabel">💧 수분 섭취</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <input class="inp" type="number" id="m-water-inp" placeholder="ml 입력" inputmode="numeric" style="flex:1;">
+        <button class="btn b-teal" style="flex:0;padding:9px 13px;font-size:12px;" onclick="mSaveWater()">저장</button>
+      </div>
+      <div class="dsval" id="m-water">-</div>
+    </div>
+
+    <!-- 식단 -->
+    <div class="dscard">
+      <div class="dslabel">🍽️ 식단</div>
+      <select class="sel" id="m-meal-sel" style="margin-bottom:8px;">
+        <option value="breakfast">🌅 아침</option>
+        <option value="lunch">☀️ 점심</option>
+        <option value="dinner">🌙 저녁</option>
+        <option value="snack">🍪 간식</option>
+      </select>
+      <div style="display:flex;gap:7px;margin-bottom:8px;">
+        <input class="inp" id="m-food-inp" type="text" placeholder="음식 이름" maxlength="30" style="flex:2;">
+        <input class="inp" id="m-food-time" type="time" style="flex:1;">
+        <button class="btn b-red" style="flex:0;padding:9px 11px;font-size:16px;" onclick="mAddFood()">＋</button>
+      </div>
+      <div class="dsval" id="m-food">-</div>
+    </div>
+
+    <!-- 운동 -->
+    <div class="dscard">
+      <div class="dslabel">💪 운동</div>
+      <div id="m-ex-checks" style="display:flex;flex-direction:column;gap:6px;margin-bottom:6px;"></div>
+    </div>
+
+    <!-- 걸음 & 산책 -->
+    <div class="dscard">
+      <div class="dslabel">👟 걸음 & 산책</div>
+      <div style="display:flex;gap:7px;margin-bottom:6px;">
+        <input class="inp" type="number" id="m-steps-inp" placeholder="걸음 수" inputmode="numeric" style="flex:1;">
+        <button class="btn b-green" style="flex:0;padding:9px 13px;font-size:12px;" onclick="mSaveSteps()">저장</button>
+      </div>
+      <div style="display:flex;gap:7px;margin-bottom:6px;">
+        <input class="inp" type="text" id="m-wt-inp" placeholder="시간 (예: 30분)" style="flex:1;">
+        <input class="inp" type="text" id="m-wd-inp" placeholder="거리 (예: 2km)" style="flex:1;">
+      </div>
+      <button class="btn b-mint" style="width:100%;margin-bottom:8px;" onclick="mSaveWalk()">산책 저장</button>
+      <div class="dsval" id="m-walk">-</div>
+    </div>
+
+    <!-- 수면 -->
+    <div class="dscard">
+      <div class="dslabel">🌙 수면</div>
+      <div style="display:flex;gap:7px;margin-bottom:8px;">
+        <div style="flex:1;"><div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:4px;">취침</div><input class="inp" type="time" id="m-sleep-s" value="23:00"></div>
+        <div style="flex:1;"><div style="font-size:10px;font-weight:800;color:var(--text2);margin-bottom:4px;">기상</div><input class="inp" type="time" id="m-sleep-e" value="07:00"></div>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;" id="m-sq-row">
+        <button class="sqbtn" data-q="나쁨" onclick="setMSQ(this)">😴 나쁨</button>
+        <button class="sqbtn" data-q="보통" onclick="setMSQ(this)">😐 보통</button>
+        <button class="sqbtn" data-q="좋음" onclick="setMSQ(this)">😊 좋음</button>
+        <button class="sqbtn" data-q="최고" onclick="setMSQ(this)">🌟 최고</button>
+      </div>
+      <button class="btn b-bk" style="width:100%;margin-bottom:8px;" onclick="mSaveSleep()">수면 저장</button>
+      <div class="dsval" id="m-sleep">-</div>
+    </div>
+  </div>
+</div>
+
+<div class="bnav">
+  <button class="btab active" onclick="goTab('today',this)"><span class="em">🌟</span>오늘</button>
+  <button class="btab" onclick="goTab('food',this)"><span class="em">🍱</span>식단</button>
+  <button class="btab" onclick="goTab('exercise',this)"><span class="em">💪</span>운동</button>
+  <button class="btab" onclick="goTab('walk',this)"><span class="em">👟</span>걷기</button>
+  <button class="btab" onclick="goTab('history',this)"><span class="em">📊</span>기록</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const START='2026-05-08';
+function tod(){const n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');}
+function dayNum(ds){const[y1,m1,d1]=START.split('-').map(Number);const[y2,m2,d2]=ds.split('-').map(Number);const a=new Date(y1,m1-1,d1);const b=new Date(y2,m2-1,d2);return Math.round((b-a)/86400000)+1;}
+function dateOfDay(i){const[y,m,d]=START.split('-').map(Number);const dt=new Date(y,m-1,d);dt.setDate(dt.getDate()+i);return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');}
+function load(d){return JSON.parse(localStorage.getItem('ck30-'+d)||'null')||blank();}
+function stor(d,v){localStorage.setItem('ck30-'+d,JSON.stringify(v));}
+function blank(){return{water:0,foods:{breakfast:[],lunch:[],dinner:[],snack:[]},ex:{arm:false,core:false,foam:false,stretch:false},steps:0,wt:'',wd:'',sleepStart:'',sleepEnd:'',sleepQ:''};}
+const T=tod();let D=load(T);
+
+const MSGS=[['오늘도 나를 위한 하루!','🍅'],['작은 습관이 큰 변화를 만들어요','✨'],['어제보다 조금 더 나은 나','💪'],['포기하지 마, 넌 할 수 있어!','🔥'],['건강한 몸, 행복한 마음','🌿'],['오늘의 노력이 내일의 나를 만들어요','⭐'],['하루하루가 소중한 변화예요','🌸'],['지금 이 순간이 최선','🎯'],['몸이 고마워하고 있어요','💙'],['꾸준함이 답이야!','🏃‍♀️']];
+const EX={arm:'💪 팔 운동',core:'🔥 복부 운동',foam:'🧘 폼롤러 하체',stretch:'🤸 상체 스트레칭'};
+const MEAL={breakfast:'🌅 아침',lunch:'☀️ 점심',dinner:'🌙 저녁',snack:'🍪 간식'};
+
+const PLAYLISTS=[
+  [{n:'Experience',a:'Ludovico Einaudi',v:'vcalm'},{n:"Comptine d'un autre été",a:'Yann Tiersen',v:'vcalm'},{n:'Slow Dancing in the Dark',a:'Joji',v:'vchill'},{n:'이 밤의 끝을 잡고',a:'장범준',v:'vcalm'},{n:'Nuvole Bianche',a:'Ludovico Einaudi',v:'vcalm'}],
+  [{n:'봄날',a:'BTS',v:'vpop'},{n:'Swim',a:"Jack's Mannequin",v:'vchill'},{n:'Love Me Like You Do',a:'Ellie Goulding',v:'vpop'},{n:'River Flows in You',a:'Yiruma',v:'vcalm'},{n:'고백',a:'폴킴',v:'vcalm'}],
+  [{n:'drivers license',a:'Olivia Rodrigo',v:'vchill'},{n:'Gravity',a:'John Mayer',v:'vchill'},{n:'Bloom',a:'The Paper Kites',v:'vcalm'},{n:'사랑을 했다',a:'iKON',v:'vpop'},{n:'밤편지',a:'아이유',v:'vcalm'}],
+  [{n:'The Night We Met',a:'Lord Huron',v:'vchill'},{n:'Kiss Me',a:'Ed Sheeran',v:'vcalm'},{n:'Dandelions',a:'Ruth B.',v:'vchill'},{n:'우주를 줄게',a:'볼빨간사춘기',v:'vpop'},{n:'죽을 만큼 아파서',a:'빅뱅',v:'vpop'}],
+  [{n:'Snowfall',a:'Øneheart',v:'vcalm'},{n:'Paris',a:'The Chainsmokers',v:'vchill'},{n:'헤어지자 말해요',a:'박재정',v:'vcalm'},{n:'August',a:'Taylor Swift',v:'vchill'},{n:'연애하기 좋은 날',a:'멜로망스',v:'vpop'}],
+  [{n:'Clair de Lune',a:'Debussy',v:'vcalm'},{n:'Falling',a:'Harry Styles',v:'vchill'},{n:'바람이 분다',a:'이소라',v:'vcalm'},{n:'A Thousand Years',a:'Christina Perri',v:'vcalm'},{n:'Windfall',a:'AJR',v:'vchill'}],
+  [{n:'Skinny Love',a:'Bon Iver',v:'vchill'},{n:'혼자야',a:'2PM',v:'vpop'},{n:'Motion Picture Soundtrack',a:'Radiohead',v:'vcalm'},{n:'Gravity',a:'Sara Bareilles',v:'vcalm'},{n:'Starboy (acoustic)',a:'The Weeknd',v:'vchill'}],
+];
+
+function initWeather(){
+  if(!navigator.geolocation){wFb();return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current=temperature_2m,weathercode,precipitation,windspeed_10m&timezone=auto`)
+      .then(r=>r.json()).then(data=>{const c=data.current;renderW(Math.round(c.temperature_2m),c.weathercode,c.windspeed_10m,c.precipitation);}).catch(wFb);
+  },wFb,{timeout:7000});
+}
+const wIcon=c=>c===0?'☀️':c<=2?'⛅':c<=3?'☁️':c<=48?'🌫️':c<=57?'🌦️':c<=67?'🌧️':c<=77?'❄️':c<=82?'🌧️':c<=99?'⛈️':'🌤️';
+const wText=c=>c===0?'맑음':c<=2?'구름 조금':c<=3?'흐림':c<=48?'안개':c<=57?'이슬비':c<=67?'비':c<=77?'눈':c<=82?'소나기':c<=99?'천둥번개':'흐림';
+function renderW(temp,code,wind,precip){
+  let cls,txt;
+  if(precip>1||code>=51){cls='bad';txt='🚫 오늘은 실내 운동 추천';}
+  else if(temp<0||temp>35||wind>40){cls='meh';txt='⚠️ 걷기 주의';}
+  else if(code===0&&temp>=10&&temp<=28){cls='good';txt='✅ 걷기 최적!';}
+  else{cls='good';txt='✅ 걷기 좋아요';}
+  document.getElementById('wbar').innerHTML=`<div class="wleft"><div class="wicon">${wIcon(code)}</div><div><div class="wtemp">${temp}°C</div><div class="wdesc">${wText(code)} · 바람 ${Math.round(wind)}km/h</div></div></div><div class="wbadge ${cls}">${txt}</div>`;
+}
+function wFb(){
+  document.getElementById('wbar').innerHTML=`<div class="wleft"><div class="wicon">📍</div><div><div class="wtemp" style="font-size:13px;font-weight:800;color:#fff;">위치 허용 시 날씨 확인</div><div class="wdesc">걷기 추천 여부도 알 수 있어요</div></div></div><button onclick="initWeather()" style="padding:5px 12px;border:2px solid #fff;border-radius:20px;background:var(--yellow);color:var(--bk);font-family:inherit;font-size:11px;cursor:pointer;font-weight:800;">허용하기</button>`;
+}
+
+function init(){
+  const dn=Math.max(1,Math.min(dayNum(T),30));
+  document.getElementById('hd-day').textContent='Day '+dn;
+  document.getElementById('hd-date').textContent=fmt(T);
+  document.getElementById('bn-sub').textContent='DAY '+dn+' · 챌린지 진행 중';
+  const m=MSGS[Math.min(dn-1,MSGS.length-1)];
+  document.getElementById('bn-msg').textContent=m[0];
+  document.getElementById('bn-emoji').textContent=m[1];
+  renderDots();renderSum();renderDrops();renderFoods();renderEx();renderSteps();renderWS();renderSleep();renderQEx();renderMusic(dn);
+  populateHist();renderHistory();initWeather();
+}
+
+function fmt(d){const[y,m,dd]=d.split('-').map(Number);return y+'년 '+m+'월 '+dd+'일';}
+function fmtShort(d){const[y,m,dd]=d.split('-').map(Number);return m+'/'+dd;}
+
+function renderDots(){
+  const el=document.getElementById('day-dots');el.innerHTML='';
+  for(let i=0;i<30;i++){
+    const ds=dateOfDay(i);const future=ds>T;
+    const dd=load(ds);
+    const done=!future&&ds!==T&&(dd.water>0||dd.steps>0||Object.values(dd.ex).some(Boolean));
+    const div=document.createElement('div');
+    div.className='dot'+(ds===T?' today':future?' future':done?' done':'');
+    div.textContent=i+1;
+    if(!future){const idx=i;div.onclick=()=>openDayModal(idx);}
+    el.appendChild(div);
+  }
+}
+
+// ── Day 모달 (편집 가능) ──
+let modalDate='';
+let modalSelQ='';
+
+function openDayModal(i){
+  modalDate=dateOfDay(i);
+  const d=load(modalDate);
+  document.getElementById('modal-title').textContent='Day '+(i+1)+' · '+fmt(modalDate)+(modalDate===T?' (오늘)':'');
+  document.getElementById('m-water-inp').value=d.water||'';
+  document.getElementById('m-steps-inp').value=d.steps||'';
+  document.getElementById('m-wt-inp').value=d.wt||'';
+  document.getElementById('m-wd-inp').value=d.wd||'';
+  document.getElementById('m-sleep-s').value=d.sleepStart||'23:00';
+  document.getElementById('m-sleep-e').value=d.sleepEnd||'07:00';
+  modalSelQ=d.sleepQ||'';
+  document.querySelectorAll('#m-sq-row .sqbtn').forEach(b=>b.classList.toggle('sel',b.dataset.q===modalSelQ));
+  mRefreshAll(d);
+  document.getElementById('day-modal').classList.add('open');
+}
+
+function mRefreshAll(d){
+  const data=d||load(modalDate);
+  // 수분
+  document.getElementById('m-water').textContent=data.water?data.water+'ml ('+Math.round(data.water/20)+'% 달성)':'기록 없음';
+  // 식단
+  const all=[];
+  for(const[mk,mv]of Object.entries(MEAL)){
+    data.foods[mk].forEach((f,i)=>{
+      const name=typeof f==='string'?f:f.name;
+      const time=typeof f==='object'&&f.time?' ('+f.time+')':'';
+      all.push('<span style="display:inline-flex;align-items:center;gap:3px;margin:2px;background:var(--yellow-l);border:1.5px solid var(--bk);border-radius:8px;padding:2px 7px;font-size:12px;font-weight:700;">'+mv+' '+esc(name)+time+'<button onclick="mDelFood(\''+mk+'\','+i+')" style="background:none;border:none;cursor:pointer;color:#aaa;font-size:12px;padding:0 1px;font-weight:800;">✕</button></span>');
+    });
+  }
+  document.getElementById('m-food').innerHTML=all.length?all.join(''):'기록 없음';
+  // 운동
+  document.getElementById('m-ex-checks').innerHTML=Object.keys(EX).map(k=>
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px dashed #eee;">'+
+    '<span style="font-size:13px;font-weight:800;">'+EX[k]+'</span>'+
+    '<button onclick="mToggleEx(\''+k+'\')" style="padding:5px 12px;border-radius:20px;font-family:inherit;font-size:11px;font-weight:800;cursor:pointer;border:2px solid var(--bk);box-shadow:var(--sh-sm);background:'+(data.ex[k]?'var(--green)':'#fff')+';color:'+(data.ex[k]?'#fff':'var(--text)')+';">'+(data.ex[k]?'완료 ✓':'미완료')+'</button>'+
+    '</div>'
+  ).join('');
+  // 걸음
+  let ws=data.steps?data.steps.toLocaleString()+' 걸음':'걸음 기록 없음';
+  if(data.wt||data.wd)ws+=' · '+[data.wt,data.wd].filter(Boolean).join(' / ');
+  document.getElementById('m-walk').textContent=ws;
+  // 수면
+  document.getElementById('m-sleep').textContent=(data.sleepStart&&data.sleepEnd)?calcSleep(data.sleepStart,data.sleepEnd)+'시간 ('+data.sleepStart+' → '+data.sleepEnd+')'+(data.sleepQ?' · '+data.sleepQ:''):'기록 없음';
+}
+
+function mApply(){
+  const d=load(modalDate);
+  mRefreshAll(d);
+  if(modalDate===T){D=load(T);renderAll();}
+  if(document.getElementById('tab-history').classList.contains('active'))renderHistory();
+  renderDots();
+}
+
+function mSaveWater(){
+  const v=parseInt(document.getElementById('m-water-inp').value);
+  if(isNaN(v)||v<0){toast('수분량을 입력해주세요');return;}
+  const d=load(modalDate);d.water=v;stor(modalDate,d);
+  document.getElementById('m-water-inp').value='';
+  mApply();toast('수분 저장! 💧');
+}
+function mAddFood(){
+  const v=document.getElementById('m-food-inp').value.trim();if(!v)return;
+  const meal=document.getElementById('m-meal-sel').value;
+  const tv=document.getElementById('m-food-time').value;
+  const d=load(modalDate);d.foods[meal].push({name:v,time:tv});stor(modalDate,d);
+  document.getElementById('m-food-inp').value='';
+  mApply();toast('식사 기록! 🍽️');
+}
+function mDelFood(meal,idx){
+  const d=load(modalDate);d.foods[meal].splice(idx,1);stor(modalDate,d);mApply();
+}
+function mToggleEx(k){
+  const d=load(modalDate);d.ex[k]=!d.ex[k];stor(modalDate,d);
+  mApply();if(d.ex[k])toast('완료! 💪');
+}
+function mSaveSteps(){
+  const v=parseInt(document.getElementById('m-steps-inp').value);
+  if(isNaN(v)||v<0){toast('걸음 수를 입력해주세요');return;}
+  const d=load(modalDate);d.steps=v;stor(modalDate,d);
+  document.getElementById('m-steps-inp').value='';
+  mApply();toast('걸음 수 저장! 👟');
+}
+function mSaveWalk(){
+  const d=load(modalDate);
+  d.wt=document.getElementById('m-wt-inp').value.trim();
+  d.wd=document.getElementById('m-wd-inp').value.trim();
+  stor(modalDate,d);mApply();toast('산책 저장! 🌿');
+}
+function setMSQ(btn){
+  document.querySelectorAll('#m-sq-row .sqbtn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');modalSelQ=btn.dataset.q;
+}
+function mSaveSleep(){
+  const s=document.getElementById('m-sleep-s').value;
+  const e=document.getElementById('m-sleep-e').value;
+  if(!s||!e){toast('취침·기상 시간을 입력해주세요');return;}
+  const d=load(modalDate);d.sleepStart=s;d.sleepEnd=e;d.sleepQ=modalSelQ||d.sleepQ;
+  stor(modalDate,d);mApply();toast('수면 저장! 🌙');
+}
+function closeDayModal(e){if(!e||e.target===document.getElementById('day-modal'))document.getElementById('day-modal').classList.remove('open');}
+
+function renderSum(){
+  document.getElementById('sum-water').textContent=D.water+'ml';
+  document.getElementById('sum-steps').textContent=D.steps.toLocaleString();
+  document.getElementById('sum-foods').textContent=Object.values(D.foods).flat().length+'개';
+  document.getElementById('sum-ex').textContent=Object.values(D.ex).filter(Boolean).length+'/4';
+  document.getElementById('qw-num').textContent=D.water+'ml';
+  const st=document.getElementById('sleep-today');
+  if(D.sleepStart&&D.sleepEnd){const h=calcSleep(D.sleepStart,D.sleepEnd);st.innerHTML=`<b style="font-size:15px;">${h}시간</b> 수면 · 품질: <b>${D.sleepQ||'-'}</b>`;}
+  else st.textContent='수면 기록 없음 — 걷기 탭에서 입력하세요';
+}
+
+function renderDrops(){
+  const el=document.getElementById('quick-drops');el.innerHTML='';
+  const cnt=Math.round(D.water/100);
+  for(let i=0;i<20;i++){const s=document.createElement('span');s.className='drop'+(i<cnt?' on':'');s.textContent='💧';const idx=i;s.onclick=()=>{D.water=(idx+1)*100;save();renderAll();};el.appendChild(s);}
+}
+function addWater(){if(D.water>=2000){toast('목표 2000ml 달성! 🎉');return;}D.water=Math.min(2000,D.water+100);save();renderAll();if(D.water>=2000)toast('수분 목표 완료! 💧');}
+function removeWater(){D.water=Math.max(0,D.water-100);save();renderAll();}
+
+function addFood(){
+  const inp=document.getElementById('food-in');const meal=document.getElementById('meal-sel').value;
+  const tv=document.getElementById('food-time').value;const v=inp.value.trim();if(!v)return;
+  D.foods[meal].push({name:v,time:tv});inp.value='';save();renderFoods();renderSum();toast('식사 기록 완료 🍽️');
+}
+document.getElementById('food-in').addEventListener('keydown',e=>{if(e.key==='Enter')addFood();});
+function renderFoods(){
+  for(const m of ['breakfast','lunch','dinner','snack']){
+    const el=document.getElementById('food-'+m);const items=D.foods[m];
+    if(!items.length){el.innerHTML='';continue;}
+    let h=`<div class="card" style="padding:11px 13px"><div class="mealhd">${MEAL[m]}</div>`;
+    items.forEach((f,i)=>{
+      const name=typeof f==='string'?f:f.name;const time=typeof f==='object'&&f.time?f.time:'';
+      h+=`<div class="fchip"><span><span class="fname">${esc(name)}</span>${time?`<span class="ftime">${time}</span>`:''}</span><button class="fdel" onclick="delFood('${m}',${i})">✕</button></div>`;
+    });
+    h+='</div>';el.innerHTML=h;
+  }
+}
+function delFood(m,i){D.foods[m].splice(i,1);save();renderFoods();renderSum();}
+
+function toggleEx(k){D.ex[k]=!D.ex[k];save();renderEx();renderSum();renderQEx();if(D.ex[k])toast('완료! 수고했어요 💪');}
+function renderEx(){for(const k of ['arm','core','foam','stretch']){const b=document.getElementById('ex-'+k);if(!b)continue;b.classList.toggle('on',D.ex[k]);}}
+function renderQEx(){
+  const el=document.getElementById('quick-ex');if(!el)return;
+  el.innerHTML=Object.keys(EX).map(k=>`<div class="qrow"><span class="qname">${EX[k]}</span><button class="qbtn ${D.ex[k]?'done':'todo'}" onclick="toggleEx('${k}')">${D.ex[k]?'완료 ✓':'미완료'}</button></div>`).join('');
+}
+
+function renderMusic(dn){
+  const pl=PLAYLISTS[(dn-1)%PLAYLISTS.length];
+  const[y,m,d]=T.split('-').map(Number);
+  document.getElementById('music-sub').textContent=m+'월 '+d+'일 큐레이션 · 매일 바뀌어요 ♪';
+  const vlabel={vcalm:'calm',vchill:'chill',vpop:'pop'};
+  setNowPlaying(pl[0],0);
+  document.getElementById('music-list').innerHTML=pl.map((s,i)=>`
+    <div class="mitem" onclick="setNowPlaying({n:'${esc2(s.n)}',a:'${esc2(s.a)}',v:'${s.v}'},${i})">
+      <div class="mnum">${String(i+1).padStart(2,'0')}</div>
+      <div class="minfo"><div class="msong">${s.n}</div><div class="martist">${s.a}</div></div>
+      <span class="vibe ${s.v}">${vlabel[s.v]}</span>
+    </div>`).join('');
+}
+function setNowPlaying(s,idx){
+  document.getElementById('np-song').textContent=s.n;
+  document.getElementById('np-artist').textContent=s.a;
+  const arts=['🎵','🎶','🎸','🎹','🎺'];
+  document.getElementById('np-art').textContent=arts[idx%arts.length];
+}
+
+function saveSteps(){const v=parseInt(document.getElementById('steps-in').value)||0;D.steps=v;document.getElementById('steps-in').value='';save();renderSteps();renderSum();toast('걸음 수 저장! 👟');}
+function renderSteps(){
+  document.getElementById('steps-num').textContent=D.steps.toLocaleString();
+  const pct=Math.min(100,Math.round(D.steps/10000*100));
+  document.getElementById('steps-bar').style.width=pct+'%';
+  document.getElementById('steps-pct').textContent=pct+'%';
+}
+function saveWalk(){D.wt=document.getElementById('walk-time').value.trim();D.wd=document.getElementById('walk-dist').value.trim();save();renderWS();toast('산책 기록 저장! 🌿');}
+function renderWS(){
+  const el=document.getElementById('walk-saved');if(!el)return;
+  if(D.wt||D.wd){el.innerHTML='📍 '+(D.wt?`시간: <b>${esc(D.wt)}</b>`:'')+((D.wt&&D.wd)?' · ':'')+(D.wd?`거리: <b>${esc(D.wd)}</b>`:'');if(D.wt)document.getElementById('walk-time').value=D.wt;if(D.wd)document.getElementById('walk-dist').value=D.wd;}else el.textContent='';
+}
+
+let selQ='';
+function setSQ(btn){document.querySelectorAll('.sqbtn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');selQ=btn.dataset.q;}
+function calcSleep(s,e){const[sh,sm]=s.split(':').map(Number);const[eh,em]=e.split(':').map(Number);let mins=(eh*60+em)-(sh*60+sm);if(mins<0)mins+=1440;return(mins/60).toFixed(1);}
+function saveSleep(){
+  const s=document.getElementById('sleep-start').value;const e=document.getElementById('sleep-end').value;
+  if(!s||!e){toast('취침·기상 시간을 입력해주세요');return;}
+  D.sleepStart=s;D.sleepEnd=e;D.sleepQ=selQ||D.sleepQ;
+  save();renderSleep();renderSum();toast('수면 기록 저장! 🌙');
+}
+function renderSleep(){
+  const el=document.getElementById('sleep-num');const sv=document.getElementById('sleep-saved');
+  if(D.sleepStart&&D.sleepEnd){
+    el.textContent=calcSleep(D.sleepStart,D.sleepEnd);
+    sv.innerHTML=`취침 <b>${D.sleepStart}</b> → 기상 <b>${D.sleepEnd}</b>${D.sleepQ?' · 품질: <b>'+D.sleepQ+'</b>':''}`;
+    document.getElementById('sleep-start').value=D.sleepStart;
+    document.getElementById('sleep-end').value=D.sleepEnd;
+    if(D.sleepQ){document.querySelectorAll('.sqbtn').forEach(b=>{if(b.dataset.q===D.sleepQ)b.classList.add('sel');});selQ=D.sleepQ;}
+  }else{el.textContent='0';sv.textContent='';}
+}
+
+function populateHist(){
+  const sel=document.getElementById('hist-sel');sel.innerHTML='';
+  for(let i=0;i<30;i++){
+    const ds=dateOfDay(i);if(ds>T)continue;
+    const o=document.createElement('option');
+    o.value=ds;o.textContent='Day '+(i+1)+' · '+fmt(ds)+(ds===T?' (오늘)':'');
+    if(ds===T)o.selected=true;sel.appendChild(o);
+  }
+}
+function renderHistory(){
+  const date=document.getElementById('hist-sel').value||T;const d=load(date);
+  document.getElementById('hv-water').textContent=d.water?d.water+'ml ('+Math.round(d.water/20)+'% 달성)':'기록 없음';
+  const all=[];
+  for(const[mk,mv]of Object.entries(MEAL)){d.foods[mk].forEach(f=>{const name=typeof f==='string'?f:f.name;const time=typeof f==='object'&&f.time?' ('+f.time+')':'';all.push(mv+' '+name+time);});}
+  document.getElementById('hv-food').textContent=all.length?all.join(', '):'기록 없음';
+  document.getElementById('hv-ex').innerHTML=Object.keys(EX).map(k=>`<span class="chip ${d.ex[k]?'done':'skip'}">${EX[k]}</span>`).join('');
+  let ws=d.steps?d.steps.toLocaleString()+' 걸음':'걸음 기록 없음';
+  if(d.wt||d.wd)ws+=' · '+[d.wt,d.wd].filter(Boolean).join(' / ');
+  document.getElementById('hv-walk').textContent=ws;
+  document.getElementById('hv-sleep').textContent=(d.sleepStart&&d.sleepEnd)?calcSleep(d.sleepStart,d.sleepEnd)+'시간 ('+d.sleepStart+' → '+d.sleepEnd+')'+(d.sleepQ?' · 품질: '+d.sleepQ:''):'기록 없음';
+}
+
+function renderCharts(){
+  const days7=[];
+  for(let i=6;i>=0;i--){const[y,m,d]=T.split('-').map(Number);const dt=new Date(y,m-1,d);dt.setDate(dt.getDate()-i);days7.push(dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0'));}
+  const wData=days7.map(ds=>{const d=load(ds);return{v:d.water,lbl:fmtShort(ds)};});
+  const maxW=Math.max(...wData.map(x=>x.v),2000);
+  document.getElementById('chart-water').innerHTML=wData.map(x=>{const h=Math.round((x.v/maxW)*70)+2;const col=x.v>=2000?'#00A878':x.v>=1000?'#5ECFB0':'#B8EEE0';return`<div class="bar-wrap"><div class="bar-val" style="color:${col}">${x.v||''}</div><div class="bar-col" style="height:${h}px;background:${col}"></div><div class="bar-lbl">${x.lbl}</div></div>`;}).join('');
+  const sData=days7.map(ds=>{const d=load(ds);return{v:d.steps,lbl:fmtShort(ds)};});
+  const maxS=Math.max(...sData.map(x=>x.v),10000);
+  document.getElementById('chart-steps').innerHTML=sData.map(x=>{const h=Math.round((x.v/maxS)*70)+2;const col=x.v>=10000?'#E8352A':x.v>=5000?'#FF7A7A':'#FFCECE';return`<div class="bar-wrap"><div class="bar-val" style="color:${col}">${x.v?x.v.toLocaleString():''}</div><div class="bar-col" style="height:${h}px;background:${col}"></div><div class="bar-lbl">${x.lbl}</div></div>`;}).join('');
+  const slData=days7.map(ds=>{const d=load(ds);const h=d.sleepStart&&d.sleepEnd?parseFloat(calcSleep(d.sleepStart,d.sleepEnd)):0;return{v:h,lbl:fmtShort(ds)};});
+  const maxSl=Math.max(...slData.map(x=>x.v),8);
+  document.getElementById('chart-sleep').innerHTML=slData.map(x=>{const h=Math.round((x.v/maxSl)*70)+2;const col=x.v>=7?'#7B2FFF':x.v>=5?'#A97AFF':'#D8BDFF';return`<div class="bar-wrap"><div class="bar-val" style="color:${col}">${x.v?x.v+'h':''}</div><div class="bar-col" style="height:${h}px;background:${col}"></div><div class="bar-lbl">${x.lbl}</div></div>`;}).join('');
+  const hm=document.getElementById('ex-heatmap');hm.innerHTML='';
+  for(let i=0;i<30;i++){
+    const ds=dateOfDay(i);const future=ds>T;const d=load(ds);
+    const cnt=Object.values(d.ex).filter(Boolean).length;
+    let cc='c0';if(!future){if(cnt===0)cc='c0';else if(cnt===1)cc='c1';else if(cnt<=3)cc='c2';else cc='c4';}
+    const cell=document.createElement('div');cell.className='hcell '+cc;cell.textContent=i+1;
+    if(future)cell.style.opacity='.3';
+    else{const idx=i;cell.onclick=()=>openDayModal(idx);}
+    hm.appendChild(cell);
+  }
+  let tw=0,te=0,ts=0,tsl=0,slSum=0;
+  for(let i=0;i<30;i++){const ds=dateOfDay(i);if(ds>T)break;const d=load(ds);if(d.water>=2000)tw++;if(Object.values(d.ex).filter(Boolean).length>=4)te++;if(d.steps>=10000)ts++;if(d.sleepStart&&d.sleepEnd){slSum+=parseFloat(calcSleep(d.sleepStart,d.sleepEnd));tsl++;}}
+  const avgSl=tsl?(slSum/tsl).toFixed(1):'-';
+  document.getElementById('summary-stats').innerHTML=[
+    ['💧','수분 목표 달성',tw+'일','var(--blue)','var(--blue-l)'],
+    ['💪','운동 완료일',te+'일','var(--green)','var(--green-l)'],
+    ['👟','만보 달성일',ts+'일','var(--red)','var(--red-l)'],
+    ['🌙','평균 수면',avgSl+'h','var(--purple)','var(--purple-l)'],
+  ].map(([em,lbl,val,col,bg])=>`<div style="background:${bg};border-radius:12px;padding:12px;text-align:center;border:var(--bw) solid var(--bk);box-shadow:var(--sh-sm);"><div style="font-size:20px;margin-bottom:3px;">${em}</div><div style="font-size:20px;font-weight:800;color:${col}">${val}</div><div style="font-size:10px;color:var(--text2);font-weight:800;margin-top:2px;">${lbl}</div></div>`).join('');
+}
+
+function switchHTab(tab){
+  document.getElementById('hist-detail').style.display=tab==='detail'?'block':'none';
+  document.getElementById('hist-chart').style.display=tab==='chart'?'block':'none';
+  document.getElementById('htab-detail').classList.toggle('active',tab==='detail');
+  document.getElementById('htab-chart').classList.toggle('active',tab==='chart');
+  if(tab==='chart')renderCharts();
+}
+
+function save(){stor(T,D);renderDots();}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function esc2(s){return s.replace(/'/g,"\\'");}
+function renderAll(){renderSum();renderDrops();renderFoods();renderEx();renderQEx();renderSteps();renderWS();renderSleep();}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function goTab(name,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab,.btab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('.tab,.btab').forEach(b=>{const oc=b.getAttribute('onclick');if(oc&&oc.includes("'"+name+"'"))b.classList.add('active');});
+  if(name==='history'){populateHist();renderHistory();}
+}
+
+init();
+</script>
+</body>
+</html>
